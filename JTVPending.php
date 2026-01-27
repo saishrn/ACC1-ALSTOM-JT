@@ -1,6 +1,8 @@
 <?php
+
 $cmd = '/usr/bin/ssh -i /var/sshkeys_nobody/id_rsa_jtmon -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR oracle1@ibmplmdusd80 "cd /home/oracle1; ./JTVPending.sh" 2>&1';
 $output = shell_exec($cmd);
+
 // ---------- Parsing logic ----------
 function parseRows($raw) {
     $rows = array();
@@ -43,14 +45,16 @@ function parseRows($raw) {
 }
 $rows = parseRows($output);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="utf-8" />
 <title>JT Pending Status</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+
 <style type="text/css">
-    /* Base page */
     body {
         font-family: Arial, Helvetica, sans-serif;
         margin: 18px;
@@ -82,7 +86,6 @@ $rows = parseRows($output);
         justify-content: center;
         margin-bottom: 24px;
     }
-    /* JT table */
     table.jt {
         border-collapse: collapse;
         width: 760px;       /* “normal” width */
@@ -147,24 +150,30 @@ $rows = parseRows($output);
         table.jt th, table.jt td { padding: 8px; font-size: 14px; }
     }
 </style>
+
 </head>
+
 <body>
-    <!-- Image first (same as previous webpage) -->
+
     <img src="../images/AlstomImage.jpg">
     <h1>JT Pending Status (Refresh this page to see updated values)</h1>
     <div class="meta">Last refreshed (server time): <?php echo date('Y-m-d H:i:s'); ?></div>
+
 <?php if ($output === null || trim($output) === ''): ?>
     <div class="notice">
         No output received from JTVPending.sh - Please verify SSH connectivity and that the remote script runs correctly.
     </div>
+
 <?php else: ?>
     <?php if (count($rows) === 0): ?>
         <div class="notice">Output returned but no parseable data lines were found — showing raw output below.</div>
         <pre class="raw"><?php echo htmlspecialchars($output, ENT_QUOTES, 'UTF-8'); ?></pre>
     <?php else: ?>
+
         <!-- Centered table -->
         <div class="table-wrap">
             <table class="jt" aria-label="JT Pending status table">
+                
                 <thead>
                     <tr>
                         <th>Date</th>
@@ -174,6 +183,7 @@ $rows = parseRows($output);
                         <th>Nolimit</th>
                     </tr>
                 </thead>
+                
                 <tbody>
                     <?php foreach ($rows as $r): ?>
                     <tr>
@@ -185,9 +195,12 @@ $rows = parseRows($output);
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
+
             </table>
         </div>
+    
     <?php endif; ?>
 <?php endif; ?>
+
 </body>
 </html>
