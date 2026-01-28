@@ -258,9 +258,13 @@ function parseRows($raw) {
 $rows = parseRows($output);
 
 // ---------- Sort by TOTAL (descending) ----------
-usort($rows, function ($a, $b) {
-    return $b['total'] <=> $a['total'];
-});
+function sortByTotalDesc($a, $b) {
+    if ($a['total'] == $b['total']) {
+        return 0;
+    }
+    return ($a['total'] < $b['total']) ? 1 : -1;
+}
+usort($rows, 'sortByTotalDesc');
 
 ?>
 
