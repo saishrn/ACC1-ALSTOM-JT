@@ -59,7 +59,6 @@ EOF
     NORMAL=${NORMAL:-0}
     EXTEND=${EXTEND:-0}
     NOLIMIT=${NOLIMIT:-0}
-
     TOTAL=$((NORMAL + EXTEND + NOLIMIT))
 
     DB_NAME=$(echo "${DB%_*}" | tr '[:lower:]' '[:upper:]')
